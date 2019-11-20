@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# ROS 2
+src
+build
+install
+log
