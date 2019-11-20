@@ -3,10 +3,6 @@ repositories:
     type: git
     url: https://github.com/ROBOTIS-GIT/DynamixelSDK.git
     version: ros2
-  src/cmake_modules:
-    type: git
-    url: https://github.com/rjshim/cmake_modules.git
-    version: ros2-devel
   src/dynamixel-workbench:
     type: git
     url: https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
@@ -15,13 +11,13 @@ repositories:
     type: git
     url: https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
     version: ros2
-  src/joint_state_publisher:
-    type: git
-    url: https://github.com/rjshim/joint_state_publisher.git
-    version: ros2-devel
   src/open_manipulator:
     type: git
     url: https://github.com/ROBOTIS-GIT/open_manipulator.git
+    version: ros2
+  src/open_manipulator_dependencies:
+    type: git
+    url: https://github.com/ROBOTIS-GIT/open_manipulator_dependencies.git
     version: ros2
   src/open_manipulator_msgs:
     type: git
