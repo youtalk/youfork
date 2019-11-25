@@ -27,3 +27,11 @@ repositories:
     type: git
     url: https://github.com/ROBOTIS-GIT/robotis_manipulator.git
     version: ros2
+  src/ros2_control:
+    type: git
+    url: git@github.com:ros-controls/ros2_control.git
+    version: dashing_update
+  src/ros2_controllers:
+    type: git
+    url: git@github.com:ros-controls/ros2_controllers.git
+    version: dashing_update
