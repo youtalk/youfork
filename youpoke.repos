@@ -1,37 +1,41 @@
 repositories:
-  src/DynamixelSDK:
+  DynamixelSDK:
     type: git
     url: https://github.com/ROBOTIS-GIT/DynamixelSDK.git
     version: ros2
-  src/dynamixel-workbench:
+  dynamixel-workbench:
     type: git
     url: https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
     version: ros2
-  src/dynamixel-workbench-msgs:
+  dynamixel-workbench-msgs:
     type: git
     url: https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
     version: ros2
-  src/open_manipulator:
+  open_manipulator:
     type: git
     url: https://github.com/ROBOTIS-GIT/open_manipulator.git
     version: ros2
-  src/open_manipulator_dependencies:
+  open_manipulator_dependencies:
     type: git
     url: https://github.com/ROBOTIS-GIT/open_manipulator_dependencies.git
     version: ros2
-  src/open_manipulator_msgs:
+  open_manipulator_msgs:
     type: git
     url: https://github.com/ROBOTIS-GIT/open_manipulator_msgs.git
     version: ros2
-  src/robotis_manipulator:
+  realtime_tools:
+    type: git
+    url: git@github.com:ros-controls/realtime_tools.git
+    version: dashing-devel
+  robotis_manipulator:
     type: git
     url: https://github.com/ROBOTIS-GIT/robotis_manipulator.git
     version: ros2
-  src/ros2_control:
+  ros2_control:
     type: git
     url: git@github.com:ros-controls/ros2_control.git
     version: dashing
-  src/ros2_controllers:
+  ros2_controllers:
     type: git
     url: git@github.com:ros-controls/ros2_controllers.git
     version: dashing
