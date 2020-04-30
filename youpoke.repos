@@ -3,6 +3,10 @@ repositories:
     type: git
     url: https://github.com/ROBOTIS-GIT/DynamixelSDK.git
     version: ros2
+  control_msgs:
+    type: git
+    url: git@github.com:ros-controls/control_msgs.git
+    version: foxy-devel
   dynamixel-workbench:
     type: git
     url: https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
@@ -26,7 +30,7 @@ repositories:
   realtime_tools:
     type: git
     url: git@github.com:ros-controls/realtime_tools.git
-    version: dashing-devel
+    version: ros2_devel
   robotis_manipulator:
     type: git
     url: https://github.com/ROBOTIS-GIT/robotis_manipulator.git
@@ -34,8 +38,8 @@ repositories:
   ros2_control:
     type: git
     url: git@github.com:ros-controls/ros2_control.git
-    version: dashing
+    version: master
   ros2_controllers:
     type: git
     url: git@github.com:ros-controls/ros2_controllers.git
-    version: dashing
+    version: master
