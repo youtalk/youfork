@@ -7,6 +7,10 @@ repositories:
     type: git
     url: git@github.com:ros-controls/control_msgs.git
     version: foxy-devel
+  create_autonomy:
+    type: git
+    url: git@github.com:youtalk/create_autonomy.git
+    version: lifecycle-node
   dynamixel-workbench:
     type: git
     url: https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
@@ -43,3 +47,11 @@ repositories:
     type: git
     url: git@github.com:ros-controls/ros2_controllers.git
     version: master
+  ros2_intel_realsense:
+    type: git
+    url: git@github.com:intel/ros2_intel_realsense.git
+    version: eloquent
+  rplidar_ros:
+    type: git
+    url: git@github.com:youtalk/rplidar_ros.git
+    version: dashing
