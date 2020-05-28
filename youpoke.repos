@@ -19,6 +19,10 @@ repositories:
     type: git
     url: https://github.com/ROBOTIS-GIT/dynamixel-workbench-msgs.git
     version: ros2
+  libcreate:
+    type: git
+    url: git@github.com:AutonomyLab/libcreate.git
+    version: master
   open_manipulator:
     type: git
     url: https://github.com/ROBOTIS-GIT/open_manipulator.git
