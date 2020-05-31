@@ -13,6 +13,9 @@
   <depend>robot_state_publisher</depend>
   <depend>xacro</depend>
   <depend>urdf</depend>
+  <depend>rviz2</depend>
+  <depend>launch_ros</depend>
+  <depend>launch_xml</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
