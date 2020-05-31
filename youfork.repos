@@ -46,11 +46,11 @@ repositories:
   ros2_control:
     type: git
     url: git@github.com:ros-controls/ros2_control.git
-    version: master
+    version: eloquent
   ros2_controllers:
     type: git
     url: git@github.com:ros-controls/ros2_controllers.git
-    version: master
+    version: eloquent
   ros2_intel_realsense:
     type: git
     url: git@github.com:intel/ros2_intel_realsense.git
