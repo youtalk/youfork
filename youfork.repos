@@ -10,7 +10,7 @@ repositories:
   create_autonomy:
     type: git
     url: git@github.com:youtalk/create_autonomy.git
-    version: lifecycle-node
+    version: eloquent
   dynamixel-workbench:
     type: git
     url: https://github.com/ROBOTIS-GIT/dynamixel-workbench.git
