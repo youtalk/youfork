@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- OpenManipulator Chain -->
+<robot name="youfork" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find ca_description)/urdf/create_base.urdf.xacro" />
+  <xacro:include filename="$(find ca_description)/urdf/create_2_gazebo.urdf.xacro" />
+  <xacro:include filename="$(find open_manipulator_x_description)/urdf/materials.xacro" />
+  <xacro:include filename="$(find open_manipulator_x_description)/urdf/open_manipulator_x.gazebo.xacro" />
+  <xacro:include filename="$(find open_manipulator_x_description)/urdf/open_manipulator_x.transmission.xacro" />
+  <xacro:include filename="$(find open_manipulator_x_description)/urdf/open_manipulator_x.urdf.xacro" />
+
+  <xacro:create_base wheel_separation="0.235" base_diameter="0.3485">
+    <mesh filename="package://ca_description/meshes/create_2.dae" />
+  </xacro:create_base>
+</robot>

@@ -1,0 +1,18 @@
+<launch>
+  <arg name="robot_description"
+       default="$(find-pkg-share youfork_description)/urdf/youfork.urdf.xacro"/>
+
+  <node pkg="third_assy_driver" exec="mascon_ros" output="screen"/>
+
+  <node pkg="joint_state_publisher" exec="joint_state_publisher"
+        args="$(var robot_description)" output="screen">
+    <param name="use_gui" value="true"/>
+    <param name="source_list" value="joint_states"/>
+  </node>
+
+  <node pkg="robot_state_publisher" exec="robot_state_publisher"
+        args="$(var robot_description)" output="screen"/>
+
+  <node pkg="rviz2" exec="rviz2"
+        output="screen"/>
+</launch>
