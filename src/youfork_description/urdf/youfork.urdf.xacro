@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<!-- OpenManipulator Chain -->
 <robot name="youfork" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find ca_description)/urdf/create_base.urdf.xacro" />
   <xacro:include filename="$(find ca_description)/urdf/create_2_gazebo.urdf.xacro" />
