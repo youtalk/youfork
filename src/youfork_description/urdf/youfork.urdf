@@ -604,7 +604,7 @@
     </plugin>
   </gazebo>
   <joint name="origin_to_link1" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <origin rpy="0 -1.5708 0" xyz="0.1 0 0.1"/>
     <parent link="base_link"/>
     <child link="link1"/>
     <axis xyz="0 0 1"/>

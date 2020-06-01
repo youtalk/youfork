@@ -9,6 +9,6 @@
   </xacro:create_base>
 
   <xacro:open_manipulator_x parent="base_link">
-    <origin xyz="0 0 0" rpy="0 0 0" />
+    <origin xyz="0.1 0 0.1" rpy="0 -1.5708 0" />
   </xacro:open_manipulator_x>
 </robot>
