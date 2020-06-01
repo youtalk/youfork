@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="robot_description"
-       default="$(find-pkg-share youfork_description)/urdf/youfork.urdf.xacro"/>
+       default="$(find-pkg-share youfork_description)/urdf/youfork.urdf"/>
 
   <node pkg="joint_state_publisher" exec="joint_state_publisher"
         args="$(var robot_description)" output="screen">
