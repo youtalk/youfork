@@ -13,5 +13,6 @@
         args="$(var robot_description)" output="screen"/>
 
   <node pkg="rviz2" exec="rviz2"
+        args="-d $(find-pkg-share youfork_description)/config/youfork.rviz"
         output="screen"/>
 </launch>
