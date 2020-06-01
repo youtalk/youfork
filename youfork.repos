@@ -25,8 +25,8 @@ repositories:
     version: master
   open_manipulator:
     type: git
-    url: https://github.com/ROBOTIS-GIT/open_manipulator.git
-    version: ros2
+    url: git@github.com:youtalk/open_manipulator.git
+    version: xacro-update
   open_manipulator_dependencies:
     type: git
     url: git@github.com:youtalk/open_manipulator_dependencies.git
