@@ -201,6 +201,9 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
+  <material name="aluminum">
+    <color rgba="0.5 0.5 0.5 1"/>
+  </material>
   <link name="base_footprint">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -834,6 +837,92 @@
     <child link="camera_link"/>
   </joint>
   <link name="camera_link"/>
+  <!-- camera body, with origin at bottom screw mount -->
+  <joint name="d435_joint" type="fixed">
+    <origin rpy="0 -0.17453 0" xyz="0.12 0 0.09"/>
+    <parent link="base_link"/>
+    <child link="d435_bottom_screw_frame"/>
+  </joint>
+  <link name="d435_bottom_screw_frame"/>
+  <joint name="d435_link_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.010600000000000002 0.0175 0.0125"/>
+    <parent link="d435_bottom_screw_frame"/>
+    <child link="d435_link"/>
+  </joint>
+  <link name="d435_link">
+    <visual>
+      <!-- the mesh origin is at front plate in between the two infrared camera axes -->
+      <origin rpy="1.5707963267948966 0 1.5707963267948966" xyz="0.0043 -0.0175 0"/>
+      <geometry>
+        <!-- <box size="${d435_cam_width} ${d435_cam_height} ${d435_cam_depth}"/> -->
+        <mesh filename="package://realsense2_description/meshes/d435.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 -0.0175 0"/>
+      <geometry>
+        <box size="0.02505 0.09 0.025"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- The following are not reliable values, and should not be used for modeling -->
+      <mass value="0.564"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257"/>
+    </inertial>
+  </link>
+  <!-- camera depth joints and links -->
+  <joint name="d435_depth_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="d435_link"/>
+    <child link="d435_depth_frame"/>
+  </joint>
+  <link name="d435_depth_frame"/>
+  <joint name="d435_depth_optical_joint" type="fixed">
+    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
+    <parent link="d435_depth_frame"/>
+    <child link="d435_depth_optical_frame"/>
+  </joint>
+  <link name="d435_depth_optical_frame"/>
+  <!-- camera left IR joints and links -->
+  <joint name="d435_infra1_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.0 0"/>
+    <parent link="d435_link"/>
+    <child link="d435_infra1_frame"/>
+  </joint>
+  <link name="d435_infra1_frame"/>
+  <joint name="d435_infra1_optical_joint" type="fixed">
+    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
+    <parent link="d435_infra1_frame"/>
+    <child link="d435_infra1_optical_frame"/>
+  </joint>
+  <link name="d435_infra1_optical_frame"/>
+  <!-- camera right IR joints and links -->
+  <joint name="d435_infra2_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 -0.05 0"/>
+    <parent link="d435_link"/>
+    <child link="d435_infra2_frame"/>
+  </joint>
+  <link name="d435_infra2_frame"/>
+  <joint name="d435_infra2_optical_joint" type="fixed">
+    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
+    <parent link="d435_infra2_frame"/>
+    <child link="d435_infra2_optical_frame"/>
+  </joint>
+  <link name="d435_infra2_optical_frame"/>
+  <!-- camera color joints and links -->
+  <joint name="d435_color_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.015 0"/>
+    <parent link="d435_link"/>
+    <child link="d435_color_frame"/>
+  </joint>
+  <link name="d435_color_frame"/>
+  <joint name="d435_color_optical_joint" type="fixed">
+    <origin rpy="-1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0"/>
+    <parent link="d435_color_frame"/>
+    <child link="d435_color_optical_frame"/>
+  </joint>
+  <link name="d435_color_optical_frame"/>
   <link name="jetson_xavier">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
