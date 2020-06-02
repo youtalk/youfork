@@ -11,4 +11,54 @@
   <xacro:open_manipulator_x parent="base_link">
     <origin xyz="0.1 0 0.1" rpy="0 -1.5708 0" />
   </xacro:open_manipulator_x>
+
+  <link name="jetson_xavier">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1.548"/>
+      <inertia ixx="100"  ixy="0"  ixz="0" iyy="100" iyz="0" izz="100" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.105 0.105 0.065" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.105 0.105 0.065" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="jetson_xavier_to_base_link" type="fixed">
+    <origin xyz="-0.02 -0.09 0.11" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="jetson_xavier"/>
+  </joint>
+
+  <link name="krisdonia_battery">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.680389"/>
+      <inertia ixx="100"  ixy="0"  ixz="0" iyy="100" iyz="0" izz="100" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.127 0.14986 0.02794" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.127 0.14986 0.02794" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="krisdonia_battery_to_base_link" type="fixed">
+    <origin xyz="0 0.1 0.09" rpy="0 0 1.5708"/>
+    <parent link="base_link"/>
+    <child link="krisdonia_battery"/>
+  </joint>
 </robot>
