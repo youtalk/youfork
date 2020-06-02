@@ -35,6 +35,10 @@ repositories:
     type: git
     url: https://github.com/ROBOTIS-GIT/open_manipulator_msgs.git
     version: ros2
+  realsense-ros:
+    type: git
+    url: git@github.com:youtalk/realsense-ros.git
+    version: eloquent
   realtime_tools:
     type: git
     url: git@github.com:ros-controls/realtime_tools.git
