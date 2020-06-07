@@ -3,6 +3,11 @@
   <arg name="robot_description"
        default="$(find-pkg-share youfork_description)/urdf/youfork.urdf"/>
 
+  <arg name="xacro_file"
+       default="$(var robot_description).xacro"/>
+
+  <executable cmd="xacro $(var xacro_file) -o $(var robot_description)" output="screen"/>
+
   <node pkg="joint_state_publisher" exec="joint_state_publisher"
         args="$(var robot_description)" output="screen">
     <param name="use_gui" value="true"/>
