@@ -35,6 +35,7 @@
 build
 install
 log
+*.urdf
 
 src/DynamixelSDK/
 src/control_msgs/
