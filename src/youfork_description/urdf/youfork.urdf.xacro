@@ -28,6 +28,7 @@
       <geometry>
         <mesh filename="package://youfork_description/meshes/rplidar_main.STL" scale="0.001 0.001 0.001" />
       </geometry>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin xyz="0 -0.035 0" rpy="1.570796 0 3.14159" />
@@ -59,6 +60,7 @@
       <geometry>
         <box size="0.105 0.105 0.065" />
       </geometry>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
@@ -84,6 +86,7 @@
       <geometry>
         <box size="0.127 0.14986 0.02794" />
       </geometry>
+      <material name="grey"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />

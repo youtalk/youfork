@@ -56,6 +56,26 @@ Visualization Manager:
           Value: true
         camera_link:
           Value: true
+        d435_bottom_screw_frame:
+          Value: true
+        d435_color_frame:
+          Value: true
+        d435_color_optical_frame:
+          Value: true
+        d435_depth_frame:
+          Value: true
+        d435_depth_optical_frame:
+          Value: true
+        d435_infra1_frame:
+          Value: true
+        d435_infra1_optical_frame:
+          Value: true
+        d435_infra2_frame:
+          Value: true
+        d435_infra2_optical_frame:
+          Value: true
+        d435_link:
+          Value: true
         end_effector_link:
           Value: true
         front_wheel_link:
@@ -65,6 +85,10 @@ Visualization Manager:
         gripper_link_sub:
           Value: true
         gyro_link:
+          Value: true
+        jetson_xavier:
+          Value: true
+        krisdonia_battery:
           Value: true
         left_cliff_sensor_link:
           Value: true
@@ -88,19 +112,41 @@ Visualization Manager:
           Value: true
         rightfront_cliff_sensor_link:
           Value: true
+        rplidar:
+          Value: true
+        rplidar_scan_link:
+          Value: true
         wall_sensor_link:
           Value: true
-      Marker Scale: 0.5
+      Marker Scale: 0.20000000298023224
       Name: TF
       Show Arrows: true
       Show Axes: true
-      Show Names: false
+      Show Names: true
       Tree:
         base_footprint:
           base_link:
+            d435_bottom_screw_frame:
+              d435_link:
+                d435_color_frame:
+                  d435_color_optical_frame:
+                    {}
+                d435_depth_frame:
+                  d435_depth_optical_frame:
+                    {}
+                d435_infra1_frame:
+                  d435_infra1_optical_frame:
+                    {}
+                d435_infra2_frame:
+                  d435_infra2_optical_frame:
+                    {}
             front_wheel_link:
               {}
             gyro_link:
+              {}
+            jetson_xavier:
+              {}
+            krisdonia_battery:
               {}
             left_cliff_sensor_link:
               {}
@@ -114,7 +160,9 @@ Visualization Manager:
                   link4:
                     link5:
                       camera_link:
-                        {}
+                        rplidar:
+                          rplidar_scan_link:
+                            {}
                       end_effector_link:
                         {}
                       gripper_link:
@@ -163,6 +211,47 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        d435_bottom_screw_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_color_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_color_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_depth_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_depth_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_infra1_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_infra1_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_infra2_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_infra2_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        d435_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         end_effector_link:
           Alpha: 1
           Show Axes: false
@@ -187,6 +276,16 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        jetson_xavier:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        krisdonia_battery:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         left_cliff_sensor_link:
           Alpha: 1
           Show Axes: false
@@ -235,6 +334,15 @@ Visualization Manager:
           Show Trail: false
           Value: true
         rightfront_cliff_sensor_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rplidar:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rplidar_scan_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -290,7 +398,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 0.894111156463623
+      Distance: 0.8812359571456909
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -324,5 +432,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1759
-  X: 1869
-  Y: 537
+  X: 1182
+  Y: 44
