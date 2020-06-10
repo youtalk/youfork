@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="use_rplidar" default="true"/>
+
+  <node if="$(var use_rplidar)"
+        pkg="rplidar_ros" exec="rplidar_node" output="screen" />
+</launch>

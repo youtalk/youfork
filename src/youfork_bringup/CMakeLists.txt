@@ -23,6 +23,10 @@ find_package(open_manipulator_x REQUIRED)
 find_package(realsense_node REQUIRED)
 find_package(rplidar_ros REQUIRED)
 
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
