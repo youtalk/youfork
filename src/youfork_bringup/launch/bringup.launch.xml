@@ -20,7 +20,7 @@
     <param name="channel_type" value="serial"/>
     <param name="serial_port" value="/dev/ttyUSB1"/>
     <param name="serial_baudrate" value="115200"/>
-    <param name="frame_id" value="rplidar_laser_frame"/>
+    <param name="frame_id" value="rplidar_laser_link"/>
   </node>
 
   <node if="$(var use_realsense)"
