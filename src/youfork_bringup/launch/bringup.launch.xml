@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="use_open_manipulator" default="true"/>
-
   <arg name="use_rplidar" default="true"/>
+  <arg name="use_realsense" default="true"/>
 
   <include file="$(find-pkg-share youfork_description)/launch/display.launch.xml">
     <arg name="use_gui" value="false"/>
@@ -21,5 +21,11 @@
     <param name="serial_port" value="/dev/ttyUSB1"/>
     <param name="serial_baudrate" value="115200"/>
     <param name="frame_id" value="rplidar_laser_frame"/>
+  </node>
+
+  <node if="$(var use_realsense)"
+        pkg="realsense_node" exec="realsense_node" output="screen">
+    <!-- <param from="$(find-pkg-share realsense_examples)/config/d435i.yaml"/> -->
+    <param name="base_frame_id" value="d435_link"/>
   </node>
 </launch>
