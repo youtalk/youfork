@@ -62,4 +62,4 @@ repositories:
   rplidar_ros:
     type: git
     url: git@github.com:youtalk/rplidar_ros.git
-    version: dashing
+    version: eloquent
