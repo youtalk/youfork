@@ -6,7 +6,6 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /TF1
         - /RobotModel1/Status1
         - /RobotModel1/Description Topic1
       Splitter Ratio: 0.49268293380737305
@@ -92,8 +91,6 @@ Visualization Manager:
           Value: true
         left_cliff_sensor_link:
           Value: true
-        left_wheel_link:
-          Value: true
         leftfront_cliff_sensor_link:
           Value: true
         link1:
@@ -108,13 +105,11 @@ Visualization Manager:
           Value: true
         right_cliff_sensor_link:
           Value: true
-        right_wheel_link:
-          Value: true
         rightfront_cliff_sensor_link:
           Value: true
         rplidar:
           Value: true
-        rplidar_scan_link:
+        rplidar_laser_frame:
           Value: true
         wall_sensor_link:
           Value: true
@@ -150,8 +145,6 @@ Visualization Manager:
               {}
             left_cliff_sensor_link:
               {}
-            left_wheel_link:
-              {}
             leftfront_cliff_sensor_link:
               {}
             link1:
@@ -161,7 +154,7 @@ Visualization Manager:
                     link5:
                       camera_link:
                         rplidar:
-                          rplidar_scan_link:
+                          rplidar_laser_frame:
                             {}
                       end_effector_link:
                         {}
@@ -170,8 +163,6 @@ Visualization Manager:
                       gripper_link_sub:
                         {}
             right_cliff_sensor_link:
-              {}
-            right_wheel_link:
               {}
             rightfront_cliff_sensor_link:
               {}
@@ -342,7 +333,7 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        rplidar_scan_link:
+        rplidar_laser_frame:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -355,6 +346,39 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz_default_plugins/LaserScan
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 47
+      Min Color: 0; 0; 0
+      Min Intensity: 47
+      Name: LaserScan
+      Position Transformer: XYZ
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /scan
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -398,25 +422,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 0.8812359571456909
+      Distance: 1.9021168947219849
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.05597942695021629
-        Y: -0.0819065123796463
-        Z: 0.14353683590888977
+        X: -0.08149361610412598
+        Y: -0.1375424563884735
+        Z: 0.32927390933036804
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.30539873242378235
+      Pitch: 0.21539874374866486
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.8453981876373291
+      Yaw: 0.8653981685638428
     Saved: ~
 Window Geometry:
   Displays:

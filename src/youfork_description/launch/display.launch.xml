@@ -10,11 +10,6 @@
 
   <executable cmd="xacro $(var xacro_file) -o $(var robot_description)" output="screen"/>
 
-  <node unless="$(var use_gui)" pkg="joint_state_publisher" exec="joint_state_publisher"
-        args="$(var robot_description)" output="screen">
-    <param name="source_list" value="joint_states"/>
-  </node>
-
   <node if="$(var use_gui)" pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui"
         args="$(var robot_description)" output="screen">
   </node>

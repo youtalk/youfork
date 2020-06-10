@@ -42,11 +42,11 @@
     <parent link="camera_link"/>
     <child link="rplidar"/>
   </joint>
-  <link name="rplidar_scan_link"/>
-  <joint name="rplidar_scan_link_to_rplidar" type="fixed">
+  <link name="rplidar_laser_frame"/>
+  <joint name="rplidar_laser_frame_to_rplidar" type="fixed">
     <origin xyz="-0.035 0.0 0.045" rpy="3.14159 0 0"/>
     <parent link="rplidar"/>
-    <child link="rplidar_scan_link"/>
+    <child link="rplidar_laser_frame"/>
   </joint>
 
   <link name="jetson_xavier">
