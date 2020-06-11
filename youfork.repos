@@ -39,22 +39,10 @@ repositories:
     type: git
     url: git@github.com:youtalk/realsense-ros.git
     version: eloquent
-  realtime_tools:
-    type: git
-    url: git@github.com:ros-controls/realtime_tools.git
-    version: ros2_devel
   robotis_manipulator:
     type: git
     url: https://github.com/ROBOTIS-GIT/robotis_manipulator.git
     version: ros2
-  ros2_control:
-    type: git
-    url: git@github.com:ros-controls/ros2_control.git
-    version: eloquent
-  ros2_controllers:
-    type: git
-    url: git@github.com:ros-controls/ros2_controllers.git
-    version: eloquent
   ros2_intel_realsense:
     type: git
     url: git@github.com:intel/ros2_intel_realsense.git
