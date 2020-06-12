@@ -51,3 +51,7 @@ repositories:
     type: git
     url: git@github.com:youtalk/rplidar_ros.git
     version: eloquent
+  teleop_tools:
+    type: git
+    url: git@github.com:youtalk/teleop_tools.git
+    version: array-interface
