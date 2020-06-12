@@ -1,12 +1,21 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="use_open_manipulator" default="true"/>
-  <arg name="use_rplidar" default="true"/>
-  <arg name="use_realsense" default="true"/>
+  <arg name="use_create" default="false"/>
+  <arg name="use_open_manipulator" default="false"/>
+  <arg name="use_rplidar" default="false"/>
+  <arg name="use_realsense" default="false"/>
 
   <include file="$(find-pkg-share youfork_description)/launch/display.launch.xml">
     <arg name="use_gui" value="false"/>
   </include>
+
+  <node if="$(var use_create)"
+        pkg="ca_driver" exec="ca_driver" output="screen">
+    <param name="dev" value="/dev/ttyUSB0"/>
+    <param name="latch_cmd_duration" value="0.2"/>
+    <param name="loop_hz" value="10.0"/>
+    <param name="publish_tf" value="true"/>
+  </node>
 
   <node if="$(var use_open_manipulator)"
         pkg="open_manipulator_x_controller" exec="open_manipulator_x_controller"
