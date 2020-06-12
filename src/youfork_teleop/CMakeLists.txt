@@ -19,6 +19,8 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(youfork_bringup REQUIRED)
 find_package(joy REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(open_manipulator_msgs REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
