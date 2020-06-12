@@ -2,6 +2,7 @@
 #define YOUFORK_TELEOP_YOUFORK_TELEOP_HPP_
 
 #include <geometry_msgs/msg/twist.hpp>
+#include <open_manipulator_msgs/srv/set_actuator_state.hpp>
 #include <open_manipulator_msgs/srv/set_joint_position.hpp>
 #include <rclcpp/clock.hpp>
 #include <rclcpp/rclcpp.hpp>
@@ -20,6 +21,8 @@ private:
   void joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg);
   rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr joy_subscription_{nullptr};
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_publisher_{nullptr};
+  rclcpp::Client<open_manipulator_msgs::srv::SetActuatorState>::SharedPtr
+    set_actuator_state_client_{nullptr};
   rclcpp::Client<open_manipulator_msgs::srv::SetJointPosition>::SharedPtr
     set_joint_position_client_{nullptr};
   rclcpp::Clock clock{RCL_ROS_TIME};

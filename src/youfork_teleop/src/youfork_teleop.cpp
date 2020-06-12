@@ -1,10 +1,5 @@
 #include "youfork_teleop/youfork_teleop.hpp"
 
-#include "geometry_msgs/msg/twist__struct.hpp"
-#include "open_manipulator_msgs/srv/set_joint_position__struct.hpp"
-#include "rclcpp/client.hpp"
-#include "rclcpp/duration.hpp"
-
 namespace youfork_teleop
 {
 YouforkTeleop::YouforkTeleop() : Node("youfork_teleop")
@@ -13,6 +8,8 @@ YouforkTeleop::YouforkTeleop() : Node("youfork_teleop")
 
   auto qos = rclcpp::QoS(rclcpp::KeepLast(10));
   twist_publisher_ = create_publisher<geometry_msgs::msg::Twist>("cmd_vel", qos);
+  set_actuator_state_client_ =
+    create_client<open_manipulator_msgs::srv::SetActuatorState>("set_actuator_state");
   set_joint_position_client_ = create_client<open_manipulator_msgs::srv::SetJointPosition>(
     "goal_joint_space_path_from_present");
   joy_subscription_ = create_subscription<sensor_msgs::msg::Joy>(
@@ -31,6 +28,16 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
 
   bool base_enabled = msg->axes[3] < -0.9;
   bool arm_enabled = msg->axes[4] < -0.9;
+
+  if (msg->buttons[9] != 0.0 || msg->buttons[8] != 0.0) {
+    open_manipulator_msgs::srv::SetActuatorState::Request::UniquePtr set_actuator_state_request;
+    set_actuator_state_request->set_actuator_state = msg->buttons[9] != 0.0;
+    auto result = set_actuator_state_client_->async_send_request(
+      std::move(set_actuator_state_request),
+      [](rclcpp::Client<open_manipulator_msgs::srv::SetActuatorState>::SharedFuture future) {
+        return future.get()->is_planned;
+      });
+  }
 
   if (base_enabled) {
     geometry_msgs::msg::Twist::UniquePtr twist;
