@@ -17,10 +17,22 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(youfork_bringup REQUIRED)
-find_package(joy REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(open_manipulator_msgs REQUIRED)
+
+include_directories(
+  include
+)
+
+add_executable(${PROJECT_NAME} src/${PROJECT_NAME}.cpp)
+ament_target_dependencies(${PROJECT_NAME}
+  "rclcpp"
+  "sensor_msgs"
+  "geometry_msgs"
+  "open_manipulator_msgs"
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
