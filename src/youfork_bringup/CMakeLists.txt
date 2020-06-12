@@ -17,11 +17,6 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(youfork_description REQUIRED)
-find_package(ca_driver REQUIRED)
-find_package(open_manipulator_x REQUIRED)
-find_package(realsense_node REQUIRED)
-find_package(rplidar_ros REQUIRED)
 
 install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
