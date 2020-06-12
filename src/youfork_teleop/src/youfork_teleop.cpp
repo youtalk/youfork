@@ -3,6 +3,7 @@
 #include "geometry_msgs/msg/twist__struct.hpp"
 #include "open_manipulator_msgs/srv/set_joint_position__struct.hpp"
 #include "rclcpp/client.hpp"
+#include "rclcpp/duration.hpp"
 
 namespace youfork_teleop
 {
@@ -23,14 +24,19 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
   constexpr double kBaseLinearDelta = 0.1;
   constexpr double kBaseAngularDelta = 0.2;
   constexpr double kArmDelta = 0.1;
+
+  rclcpp::Time current_time = clock.now();
+  rclcpp::Duration dt = current_time - previous_time_;
+  previous_time_ = current_time;
+
   bool base_enabled = msg->axes[3] < -0.9;
   bool arm_enabled = msg->axes[4] < -0.9;
 
   if (base_enabled) {
     geometry_msgs::msg::Twist::UniquePtr twist;
 
-    twist->linear.x = msg->axes[1] * kBaseLinearDelta;
-    twist->angular.z = msg->axes[0] * kBaseAngularDelta;
+    twist->linear.x = msg->axes[1] * kBaseLinearDelta * dt.seconds();
+    twist->angular.z = msg->axes[0] * kBaseAngularDelta * dt.seconds();
     twist_publisher_->publish(std::move(twist));
   }
 
@@ -41,20 +47,20 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
     set_joint_position_request->joint_position.position = {0.0, 0.0, 0.0, 0.0};
 
     if (msg->axes[9] != 0.0) {
-      set_joint_position_request->joint_position.position[0] = kArmDelta;
+      set_joint_position_request->joint_position.position[0] = kArmDelta * dt.seconds();
     }
     if (msg->axes[10] != 0.0) {
-      set_joint_position_request->joint_position.position[1] = kArmDelta;
+      set_joint_position_request->joint_position.position[1] = kArmDelta * dt.seconds();
     }
     if (msg->buttons[0] != 0.0) {
-      set_joint_position_request->joint_position.position[2] = -kArmDelta;
+      set_joint_position_request->joint_position.position[2] = -kArmDelta * dt.seconds();
     } else if (msg->buttons[2] != 0.0) {
-      set_joint_position_request->joint_position.position[2] = kArmDelta;
+      set_joint_position_request->joint_position.position[2] = kArmDelta * dt.seconds();
     }
     if (msg->buttons[1] != 0.0) {
-      set_joint_position_request->joint_position.position[3] = -kArmDelta;
+      set_joint_position_request->joint_position.position[3] = -kArmDelta * dt.seconds();
     } else if (msg->buttons[3] != 0.0) {
-      set_joint_position_request->joint_position.position[3] = kArmDelta;
+      set_joint_position_request->joint_position.position[3] = kArmDelta * dt.seconds();
     }
     auto result = set_joint_position_client_->async_send_request(
       std::move(set_joint_position_request),
