@@ -37,7 +37,7 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
 
   constexpr double kBaseLinearDelta = 0.1;   // [m/s]
   constexpr double kBaseAngularDelta = 0.2;  // [rad/s]
-  constexpr double kArmDelta = 0.1;          // [rad/s]
+  constexpr double kArmDelta = 1.0;          // [rad/s]
 
   rclcpp::Time current_time = get_clock()->now();
   rclcpp::Duration dt = current_time - previous_time_;
@@ -53,15 +53,15 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
 
     auto result = set_actuator_state_client_->async_send_request(
       std::move(request),
-      [](rclcpp::Client<open_manipulator_msgs::srv::SetActuatorState>::SharedFuture future) {
+      [this](rclcpp::Client<open_manipulator_msgs::srv::SetActuatorState>::SharedFuture future) {
+        if (!future.get()->is_planned) {
+          RCLCPP_WARN(get_logger(), "set_actuator_state: failure");
+        }
         return future.get()->is_planned;
       });
   }
 
   if (base_enabled) {
-    auto & clock = *get_clock();
-    RCLCPP_INFO_THROTTLE(get_logger(), clock, 1000, "base_enabled");
-
     auto twist = std::make_unique<geometry_msgs::msg::Twist>();
     twist->linear.x = msg->axes[1] * kBaseLinearDelta;
     twist->angular.z = msg->axes[0] * kBaseAngularDelta;
@@ -73,35 +73,42 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
   }
 
   if (arm_enabled) {
-    auto & clock = *get_clock();
-    RCLCPP_INFO_THROTTLE(get_logger(), clock, 1000, "arm_enabled");
-
-    auto set_joint_position_request =
-      std::make_unique<open_manipulator_msgs::srv::SetJointPosition::Request>();
-    set_joint_position_request->joint_position.joint_name = {"joint1", "joint2", "joint3",
-                                                             "joint4"};
-    set_joint_position_request->joint_position.position = {0.0, 0.0, 0.0, 0.0};
+    auto request = std::make_unique<open_manipulator_msgs::srv::SetJointPosition::Request>();
+    request->joint_position.joint_name = {"joint1", "joint2", "joint3", "joint4"};
+    request->joint_position.position = {0.0, 0.0, 0.0, 0.0};
+    request->path_time = dt.seconds();
     if (msg->axes[9] != 0.0) {
-      set_joint_position_request->joint_position.position[0] = kArmDelta * dt.seconds();
+      request->joint_position.position[0] = msg->axes[9] * kArmDelta * dt.seconds();
     }
     if (msg->axes[10] != 0.0) {
-      set_joint_position_request->joint_position.position[1] = kArmDelta * dt.seconds();
+      request->joint_position.position[1] = -msg->axes[10] * kArmDelta * dt.seconds();
     }
     if (msg->buttons[0] == 1) {
-      set_joint_position_request->joint_position.position[2] = -kArmDelta * dt.seconds();
+      request->joint_position.position[2] = kArmDelta * dt.seconds();
     } else if (msg->buttons[2] == 1) {
-      set_joint_position_request->joint_position.position[2] = kArmDelta * dt.seconds();
+      request->joint_position.position[2] = -kArmDelta * dt.seconds();
     }
     if (msg->buttons[1] == 1) {
-      set_joint_position_request->joint_position.position[3] = -kArmDelta * dt.seconds();
+      request->joint_position.position[3] = kArmDelta * dt.seconds();
     } else if (msg->buttons[3] == 1) {
-      set_joint_position_request->joint_position.position[3] = kArmDelta * dt.seconds();
+      request->joint_position.position[3] = -kArmDelta * dt.seconds();
     }
-    auto result = set_joint_position_client_->async_send_request(
-      std::move(set_joint_position_request),
-      [](rclcpp::Client<open_manipulator_msgs::srv::SetJointPosition>::SharedFuture future) {
-        return future.get()->is_planned;
-      });
+    if (std::any_of(
+          request->joint_position.position.begin(), request->joint_position.position.end(),
+          [](double p) { return p != 0.0; })) {
+      RCLCPP_INFO(
+        get_logger(), "j1: %.3f, j2: %.3f, j3: %.3f, j4: %.3f", request->joint_position.position[0],
+        request->joint_position.position[1], request->joint_position.position[2],
+        request->joint_position.position[3]);
+      auto result = set_joint_position_client_->async_send_request(
+        std::move(request),
+        [this](rclcpp::Client<open_manipulator_msgs::srv::SetJointPosition>::SharedFuture future) {
+          if (!future.get()->is_planned) {
+            RCLCPP_WARN(get_logger(), "set_joint_position: failure");
+          }
+          return future.get()->is_planned;
+        });
+    }
   }
 }
 
