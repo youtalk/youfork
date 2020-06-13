@@ -23,8 +23,10 @@ private:
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_publisher_{nullptr};
   rclcpp::Client<open_manipulator_msgs::srv::SetActuatorState>::SharedPtr
     set_actuator_state_client_{nullptr};
+  rclcpp::Client<open_manipulator_msgs::srv::SetJointPosition>::SharedPtr set_arm_position_client_{
+    nullptr};
   rclcpp::Client<open_manipulator_msgs::srv::SetJointPosition>::SharedPtr
-    set_joint_position_client_{nullptr};
+    set_gripper_position_client_{nullptr};
   rclcpp::Time previous_time_{};
 };
 }  // namespace youfork_teleop

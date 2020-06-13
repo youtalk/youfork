@@ -19,10 +19,17 @@ YouforkTeleop::YouforkTeleop() : Node("youfork_teleop")
     rclcpp::shutdown();
   }
 
-  set_joint_position_client_ = create_client<open_manipulator_msgs::srv::SetJointPosition>(
+  set_arm_position_client_ = create_client<open_manipulator_msgs::srv::SetJointPosition>(
     "goal_joint_space_path_from_present");
-  if (!set_joint_position_client_->wait_for_service()) {
+  if (!set_arm_position_client_->wait_for_service()) {
     RCLCPP_FATAL(get_logger(), "Service not found: goal_joint_space_path_from_present");
+    rclcpp::shutdown();
+  }
+
+  set_gripper_position_client_ =
+    create_client<open_manipulator_msgs::srv::SetJointPosition>("goal_tool_control");
+  if (!set_gripper_position_client_->wait_for_service()) {
+    RCLCPP_FATAL(get_logger(), "Service not found: goal_tool_control");
     rclcpp::shutdown();
   }
 
@@ -38,6 +45,7 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
   constexpr double kBaseLinearDelta = 0.2;   // [m/s]
   constexpr double kBaseAngularDelta = 1.0;  // [rad/s]
   constexpr double kArmDelta = 0.5;          // [rad/s]
+  constexpr double kGripperDelta = 0.2;      // [rad/s]
 
   rclcpp::Time current_time = get_clock()->now();
   rclcpp::Duration dt = current_time - previous_time_;
@@ -73,41 +81,69 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
   }
 
   if (arm_enabled) {
-    auto request = std::make_unique<open_manipulator_msgs::srv::SetJointPosition::Request>();
-    request->joint_position.joint_name = {"joint1", "joint2", "joint3", "joint4"};
-    request->joint_position.position = {0.0, 0.0, 0.0, 0.0};
-    request->path_time = dt.seconds();
-    if (msg->axes[9] != 0.0) {
-      request->joint_position.position[0] = msg->axes[9] * kArmDelta * dt.seconds();
+    {
+      auto request = std::make_unique<open_manipulator_msgs::srv::SetJointPosition::Request>();
+      request->joint_position.joint_name = {"joint1", "joint2", "joint3", "joint4"};
+      request->joint_position.position = {0.0, 0.0, 0.0, 0.0};
+      request->path_time = dt.seconds();
+      if (msg->axes[9] != 0.0) {
+        request->joint_position.position[0] = msg->axes[9] * kArmDelta * dt.seconds();
+      }
+      if (msg->axes[10] != 0.0) {
+        request->joint_position.position[1] = -msg->axes[10] * kArmDelta * dt.seconds();
+      }
+      if (msg->buttons[0] == 1) {
+        request->joint_position.position[2] = kArmDelta * dt.seconds();
+      } else if (msg->buttons[2] == 1) {
+        request->joint_position.position[2] = -kArmDelta * dt.seconds();
+      }
+      if (msg->buttons[1] == 1) {
+        request->joint_position.position[3] = kArmDelta * dt.seconds();
+      } else if (msg->buttons[3] == 1) {
+        request->joint_position.position[3] = -kArmDelta * dt.seconds();
+      }
+      if (std::any_of(
+            request->joint_position.position.begin(), request->joint_position.position.end(),
+            [](double p) { return p != 0.0; })) {
+        RCLCPP_INFO(
+          get_logger(), "j1: %.3f, j2: %.3f, j3: %.3f, j4: %.3f",
+          request->joint_position.position[0], request->joint_position.position[1],
+          request->joint_position.position[2], request->joint_position.position[3]);
+        auto result = set_arm_position_client_->async_send_request(
+          std::move(request),
+          [this](
+            rclcpp::Client<open_manipulator_msgs::srv::SetJointPosition>::SharedFuture future) {
+            if (!future.get()->is_planned) {
+              RCLCPP_WARN(get_logger(), "set_arm_position: failure");
+            }
+            return future.get()->is_planned;
+          });
+      }
     }
-    if (msg->axes[10] != 0.0) {
-      request->joint_position.position[1] = -msg->axes[10] * kArmDelta * dt.seconds();
-    }
-    if (msg->buttons[0] == 1) {
-      request->joint_position.position[2] = kArmDelta * dt.seconds();
-    } else if (msg->buttons[2] == 1) {
-      request->joint_position.position[2] = -kArmDelta * dt.seconds();
-    }
-    if (msg->buttons[1] == 1) {
-      request->joint_position.position[3] = kArmDelta * dt.seconds();
-    } else if (msg->buttons[3] == 1) {
-      request->joint_position.position[3] = -kArmDelta * dt.seconds();
-    }
-    if (std::any_of(
-          request->joint_position.position.begin(), request->joint_position.position.end(),
-          [](double p) { return p != 0.0; })) {
-      RCLCPP_INFO(
-        get_logger(), "j1: %.3f, j2: %.3f, j3: %.3f, j4: %.3f", request->joint_position.position[0],
-        request->joint_position.position[1], request->joint_position.position[2],
-        request->joint_position.position[3]);
-      auto result = set_joint_position_client_->async_send_request(
-        std::move(request),
-        [this](rclcpp::Client<open_manipulator_msgs::srv::SetJointPosition>::SharedFuture future) {
-          if (!future.get()->is_planned) {
-            RCLCPP_WARN(get_logger(), "set_joint_position: failure");
-          }
-          return future.get()->is_planned;
-        });
+    {
+      auto request = std::make_unique<open_manipulator_msgs::srv::SetJointPosition::Request>();
+      request->joint_position.joint_name = {"gripper"};
+      request->joint_position.position = {0.0};
+      request->path_time = dt.seconds();
+      if (msg->buttons[10] == 1) {
+        request->joint_position.position[0] = kGripperDelta * dt.seconds();
+      } else if (msg->buttons[11] == 1) {
+        request->joint_position.position[0] = -kGripperDelta * dt.seconds();
+      }
+      if (std::any_of(
+            request->joint_position.position.begin(), request->joint_position.position.end(),
+            [](double p) { return p != 0.0; })) {
+        RCLCPP_INFO(get_logger(), "gripper: %.3f", request->joint_position.position[0]);
+        auto result = set_gripper_position_client_->async_send_request(
+          std::move(request),
+          [this](
+            rclcpp::Client<open_manipulator_msgs::srv::SetJointPosition>::SharedFuture future) {
+            if (!future.get()->is_planned) {
+              RCLCPP_WARN(get_logger(), "set_gripper_position: failure");
+            }
+            return future.get()->is_planned;
+          });
+      }
     }
   }
 }
