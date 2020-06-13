@@ -25,8 +25,7 @@ private:
     set_actuator_state_client_{nullptr};
   rclcpp::Client<open_manipulator_msgs::srv::SetJointPosition>::SharedPtr
     set_joint_position_client_{nullptr};
-  rclcpp::Clock clock{RCL_ROS_TIME};
-  rclcpp::Time previous_time_{clock.now()};
+  rclcpp::Time previous_time_{};
 };
 }  // namespace youfork_teleop
 

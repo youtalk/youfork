@@ -1,5 +1,7 @@
 #include "youfork_teleop/youfork_teleop.hpp"
 
+#include <chrono>
+
 namespace youfork_teleop
 {
 YouforkTeleop::YouforkTeleop() : Node("youfork_teleop")
@@ -8,21 +10,36 @@ YouforkTeleop::YouforkTeleop() : Node("youfork_teleop")
 
   auto qos = rclcpp::QoS(rclcpp::KeepLast(10));
   twist_publisher_ = create_publisher<geometry_msgs::msg::Twist>("cmd_vel", qos);
+
   set_actuator_state_client_ =
     create_client<open_manipulator_msgs::srv::SetActuatorState>("set_actuator_state");
+  if (!set_actuator_state_client_->wait_for_service()) {
+    RCLCPP_FATAL(get_logger(), "Service not found: set_actuator_state");
+    rclcpp::shutdown();
+  }
+
   set_joint_position_client_ = create_client<open_manipulator_msgs::srv::SetJointPosition>(
     "goal_joint_space_path_from_present");
+  if (!set_joint_position_client_->wait_for_service()) {
+    RCLCPP_FATAL(get_logger(), "Service not found: goal_joint_space_path_from_present");
+    rclcpp::shutdown();
+  }
+  set_joint_position_client_->wait_for_service();
+
+  previous_time_ = get_clock()->now();
   joy_subscription_ = create_subscription<sensor_msgs::msg::Joy>(
     "joy", qos, std::bind(&YouforkTeleop::joy_callback, this, _1));
 }
 
 void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
 {
-  constexpr double kBaseLinearDelta = 0.1;
-  constexpr double kBaseAngularDelta = 0.2;
-  constexpr double kArmDelta = 0.1;
+  using namespace std::chrono_literals;
 
-  rclcpp::Time current_time = clock.now();
+  constexpr double kBaseLinearDelta = 0.1;   // [m/s]
+  constexpr double kBaseAngularDelta = 0.2;  // [rad/s]
+  constexpr double kArmDelta = 0.1;          // [rad/s]
+
+  rclcpp::Time current_time = get_clock()->now();
   rclcpp::Duration dt = current_time - previous_time_;
   previous_time_ = current_time;
 
@@ -40,19 +57,24 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
   }
 
   if (base_enabled) {
-    geometry_msgs::msg::Twist::UniquePtr twist;
+    auto & clock = *get_clock();
+    RCLCPP_INFO_THROTTLE(get_logger(), clock, 1000, "base_enabled");
 
-    twist->linear.x = msg->axes[1] * kBaseLinearDelta * dt.seconds();
-    twist->angular.z = msg->axes[0] * kBaseAngularDelta * dt.seconds();
-    twist_publisher_->publish(std::move(twist));
+    geometry_msgs::msg::Twist twist;
+    twist.linear.x = msg->axes[1] * kBaseLinearDelta;
+    twist.angular.z = msg->axes[0] * kBaseAngularDelta;
+    RCLCPP_INFO(get_logger(), "linear.x: %.3f, angular.z: %.3f", twist.linear.x, twist.angular.z);
+    twist_publisher_->publish(twist);
   }
 
   if (arm_enabled) {
+    auto & clock = *get_clock();
+    RCLCPP_INFO_THROTTLE(get_logger(), clock, 1000, "arm_enabled");
+
     open_manipulator_msgs::srv::SetJointPosition::Request::UniquePtr set_joint_position_request;
     set_joint_position_request->joint_position.joint_name = {"joint1", "joint2", "joint3",
                                                              "joint4"};
     set_joint_position_request->joint_position.position = {0.0, 0.0, 0.0, 0.0};
-
     if (msg->axes[9] != 0.0) {
       set_joint_position_request->joint_position.position[0] = kArmDelta * dt.seconds();
     }
