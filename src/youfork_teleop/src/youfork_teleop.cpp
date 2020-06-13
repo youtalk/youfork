@@ -1,6 +1,7 @@
 #include "youfork_teleop/youfork_teleop.hpp"
 
 #include <chrono>
+#include <memory>
 
 namespace youfork_teleop
 {
@@ -24,7 +25,6 @@ YouforkTeleop::YouforkTeleop() : Node("youfork_teleop")
     RCLCPP_FATAL(get_logger(), "Service not found: goal_joint_space_path_from_present");
     rclcpp::shutdown();
   }
-  set_joint_position_client_->wait_for_service();
 
   previous_time_ = get_clock()->now();
   joy_subscription_ = create_subscription<sensor_msgs::msg::Joy>(
@@ -46,11 +46,13 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
   bool base_enabled = msg->axes[3] < -0.9;
   bool arm_enabled = msg->axes[4] < -0.9;
 
-  if (msg->buttons[9] != 0.0 || msg->buttons[8] != 0.0) {
-    open_manipulator_msgs::srv::SetActuatorState::Request::UniquePtr set_actuator_state_request;
-    set_actuator_state_request->set_actuator_state = msg->buttons[9] != 0.0;
+  if (msg->buttons[9] == 1 || msg->buttons[8] == 1) {
+    auto request = std::make_unique<open_manipulator_msgs::srv::SetActuatorState::Request>();
+    request->set_actuator_state = msg->buttons[9] == 1;
+    RCLCPP_INFO(get_logger(), "set_actuator_state: %d", request->set_actuator_state);
+
     auto result = set_actuator_state_client_->async_send_request(
-      std::move(set_actuator_state_request),
+      std::move(request),
       [](rclcpp::Client<open_manipulator_msgs::srv::SetActuatorState>::SharedFuture future) {
         return future.get()->is_planned;
       });
@@ -60,18 +62,22 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
     auto & clock = *get_clock();
     RCLCPP_INFO_THROTTLE(get_logger(), clock, 1000, "base_enabled");
 
-    geometry_msgs::msg::Twist twist;
-    twist.linear.x = msg->axes[1] * kBaseLinearDelta;
-    twist.angular.z = msg->axes[0] * kBaseAngularDelta;
-    RCLCPP_INFO(get_logger(), "linear.x: %.3f, angular.z: %.3f", twist.linear.x, twist.angular.z);
-    twist_publisher_->publish(twist);
+    auto twist = std::make_unique<geometry_msgs::msg::Twist>();
+    twist->linear.x = msg->axes[1] * kBaseLinearDelta;
+    twist->angular.z = msg->axes[0] * kBaseAngularDelta;
+    if (twist->linear.x != 0.0 && twist->angular.z != 0.0) {
+      RCLCPP_INFO(
+        get_logger(), "linear.x: %.3f, angular.z: %.3f", twist->linear.x, twist->angular.z);
+    }
+    twist_publisher_->publish(std::move(twist));
   }
 
   if (arm_enabled) {
     auto & clock = *get_clock();
     RCLCPP_INFO_THROTTLE(get_logger(), clock, 1000, "arm_enabled");
 
-    open_manipulator_msgs::srv::SetJointPosition::Request::UniquePtr set_joint_position_request;
+    auto set_joint_position_request =
+      std::make_unique<open_manipulator_msgs::srv::SetJointPosition::Request>();
     set_joint_position_request->joint_position.joint_name = {"joint1", "joint2", "joint3",
                                                              "joint4"};
     set_joint_position_request->joint_position.position = {0.0, 0.0, 0.0, 0.0};
@@ -81,14 +87,14 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
     if (msg->axes[10] != 0.0) {
       set_joint_position_request->joint_position.position[1] = kArmDelta * dt.seconds();
     }
-    if (msg->buttons[0] != 0.0) {
+    if (msg->buttons[0] == 1) {
       set_joint_position_request->joint_position.position[2] = -kArmDelta * dt.seconds();
-    } else if (msg->buttons[2] != 0.0) {
+    } else if (msg->buttons[2] == 1) {
       set_joint_position_request->joint_position.position[2] = kArmDelta * dt.seconds();
     }
-    if (msg->buttons[1] != 0.0) {
+    if (msg->buttons[1] == 1) {
       set_joint_position_request->joint_position.position[3] = -kArmDelta * dt.seconds();
-    } else if (msg->buttons[3] != 0.0) {
+    } else if (msg->buttons[3] == 1) {
       set_joint_position_request->joint_position.position[3] = kArmDelta * dt.seconds();
     }
     auto result = set_joint_position_client_->async_send_request(
