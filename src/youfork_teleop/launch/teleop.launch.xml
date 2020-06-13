@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- <executable cmd="ds4drv" output="screen"/> -->
+
+  <node pkg="joy" exec="joy_node" output="screen">
+    <param name="device_id" value="0"/>
+    <param name="autorepeat_rate" value="20.0"/>
+    <param name="sticky_buttons" value="false"/>
+  </node>
+
+  <node pkg="youfork_teleop" exec="youfork_teleop" output="screen">
+  </node>
+</launch>
