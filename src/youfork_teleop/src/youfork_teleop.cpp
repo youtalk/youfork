@@ -35,8 +35,8 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
 {
   using namespace std::chrono_literals;
 
-  constexpr double kBaseLinearDelta = 0.1;   // [m/s]
-  constexpr double kBaseAngularDelta = 0.2;  // [rad/s]
+  constexpr double kBaseLinearDelta = 0.2;   // [m/s]
+  constexpr double kBaseAngularDelta = 1.0;  // [rad/s]
   constexpr double kArmDelta = 0.5;          // [rad/s]
 
   rclcpp::Time current_time = get_clock()->now();
