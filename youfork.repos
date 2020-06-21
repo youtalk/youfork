@@ -26,7 +26,7 @@ repositories:
   open_manipulator:
     type: git
     url: git@github.com:youtalk/open_manipulator.git
-    version: xacro-update
+    version: youfork
   open_manipulator_dependencies:
     type: git
     url: git@github.com:youtalk/open_manipulator_dependencies.git
