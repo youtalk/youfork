@@ -9,12 +9,38 @@
     <mesh filename="package://ca_description/meshes/create_2.dae" />
   </xacro:create_base>
 
-  <xacro:open_manipulator_x parent="base_link">
-    <origin xyz="0.1 0 0.1" rpy="0 -1.5708 0" />
+  <link name="wooden_plate">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="100"  ixy="0"  ixz="0" iyy="100" iyz="0" izz="100" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.15" length="0.02" />
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.15" length="0.02" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="wooden_plate_to_base_link" type="fixed">
+    <origin xyz="0 0 0.09" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="wooden_plate"/>
+  </joint>
+
+  <xacro:open_manipulator_x parent="wooden_plate">
+    <origin xyz="0.1 -0.07 0.03" rpy="0 -1.5708 0" />
   </xacro:open_manipulator_x>
 
-  <xacro:sensor_d435 parent="base_link" name="d435">
-    <origin xyz="0.12 0 0.08" rpy="0 -0.17453 0"/>
+  <xacro:sensor_d435 parent="wooden_plate" name="d435">
+    <origin xyz="0.12 -0.07 0.02" rpy="0 -0.17453 0"/>
   </xacro:sensor_d435>
 
   <link name="rplidar">
@@ -49,6 +75,32 @@
     <child link="rplidar_laser_link"/>
   </joint>
 
+  <link name="krisdonia_battery">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.680389"/>
+      <inertia ixx="100"  ixy="0"  ixz="0" iyy="100" iyz="0" izz="100" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.126 0.15 0.028" />
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.126 0.15 0.028" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="krisdonia_battery_to_wooden_plate" type="fixed">
+    <origin xyz="-0.04 0.07 0.024" rpy="0 0 1.5708"/>
+    <parent link="wooden_plate"/>
+    <child link="krisdonia_battery"/>
+  </joint>
+
   <link name="jetson_xavier">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -69,35 +121,9 @@
       </geometry>
     </collision>
   </link>
-  <joint name="jetson_xavier_to_base_link" type="fixed">
-    <origin xyz="-0.05 -0.09 0.11" rpy="0 0 0"/>
-    <parent link="base_link"/>
+  <joint name="jetson_xavier_to_krisdonia_battery" type="fixed">
+    <origin xyz="0 0 0.0465" rpy="0 0 0"/>
+    <parent link="krisdonia_battery"/>
     <child link="jetson_xavier"/>
-  </joint>
-
-  <link name="krisdonia_battery">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.680389"/>
-      <inertia ixx="100"  ixy="0"  ixz="0" iyy="100" iyz="0" izz="100" />
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <box size="0.127 0.14986 0.02794" />
-      </geometry>
-      <material name="grey"/>
-    </visual>
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <box size="0.127 0.14986 0.02794" />
-      </geometry>
-    </collision>
-  </link>
-  <joint name="krisdonia_battery_to_base_link" type="fixed">
-    <origin xyz="0 0.1 0.09" rpy="0 0 1.5708"/>
-    <parent link="base_link"/>
-    <child link="krisdonia_battery"/>
   </joint>
 </robot>
