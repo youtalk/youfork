@@ -19,7 +19,7 @@
 
   <node if="$(var use_open_manipulator)"
         pkg="open_manipulator_x_controller" exec="open_manipulator_x_controller"
-        args="-d /dev/ttyUSB0 1000000" output="screen">
+        args="-d /dev/ttyUSB1 1000000" output="screen">
     <param name="sim" value="false"/>
     <param name="control_period" value="0.01"/>
   </node>
@@ -27,7 +27,7 @@
   <node if="$(var use_rplidar)"
         pkg="rplidar_ros" exec="rplidar_node" output="screen">
     <param name="channel_type" value="serial"/>
-    <param name="serial_port" value="/dev/ttyUSB1"/>
+    <param name="serial_port" value="/dev/ttyUSB2"/>
     <param name="serial_baudrate" value="115200"/>
     <param name="frame_id" value="rplidar_laser_link"/>
   </node>
