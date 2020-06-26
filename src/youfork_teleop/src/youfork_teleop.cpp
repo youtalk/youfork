@@ -9,9 +9,11 @@ YouforkTeleop::YouforkTeleop() : Node("youfork_teleop")
 {
   using namespace std::placeholders;
 
+  RCLCPP_INFO(get_logger(), "Initialize: twist_publisher");
   auto qos = rclcpp::QoS(rclcpp::KeepLast(10));
   twist_publisher_ = create_publisher<geometry_msgs::msg::Twist>("cmd_vel", qos);
 
+  RCLCPP_INFO(get_logger(), "Initialize: set_actuator_state_client");
   set_actuator_state_client_ =
     create_client<open_manipulator_msgs::srv::SetActuatorState>("set_actuator_state");
   if (!set_actuator_state_client_->wait_for_service()) {
@@ -19,6 +21,7 @@ YouforkTeleop::YouforkTeleop() : Node("youfork_teleop")
     rclcpp::shutdown();
   }
 
+  RCLCPP_INFO(get_logger(), "Initialize: set_arm_position_client");
   set_arm_position_client_ = create_client<open_manipulator_msgs::srv::SetJointPosition>(
     "goal_joint_space_path_from_present");
   if (!set_arm_position_client_->wait_for_service()) {
@@ -26,6 +29,7 @@ YouforkTeleop::YouforkTeleop() : Node("youfork_teleop")
     rclcpp::shutdown();
   }
 
+  RCLCPP_INFO(get_logger(), "Initialize: set_gripper_position_client");
   set_gripper_position_client_ =
     create_client<open_manipulator_msgs::srv::SetJointPosition>("goal_tool_control");
   if (!set_gripper_position_client_->wait_for_service()) {
@@ -33,6 +37,7 @@ YouforkTeleop::YouforkTeleop() : Node("youfork_teleop")
     rclcpp::shutdown();
   }
 
+  RCLCPP_INFO(get_logger(), "Initialize: joy_subscription");
   previous_time_ = get_clock()->now();
   joy_subscription_ = create_subscription<sensor_msgs::msg::Joy>(
     "joy", qos, std::bind(&YouforkTeleop::joy_callback, this, _1));
@@ -71,7 +76,7 @@ void YouforkTeleop::joy_callback(const sensor_msgs::msg::Joy::UniquePtr msg)
 
   if (base_enabled) {
     auto twist = std::make_unique<geometry_msgs::msg::Twist>();
-    twist->linear.x = msg->axes[1] * kBaseLinearDelta;
+    twist->linear.x = -msg->axes[1] * kBaseLinearDelta;
     twist->angular.z = msg->axes[0] * kBaseAngularDelta;
     if (twist->linear.x != 0.0 && twist->angular.z != 0.0) {
       RCLCPP_INFO(
