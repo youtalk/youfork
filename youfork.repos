@@ -5,11 +5,11 @@ repositories:
     version: ros2
   control_msgs:
     type: git
-    url: git@github.com:ros-controls/control_msgs.git
+    url: https://github.com/ros-controls/control_msgs.git
     version: foxy-devel
   create_autonomy:
     type: git
-    url: git@github.com:youtalk/create_autonomy.git
+    url: https://github.com/youtalk/create_autonomy.git
     version: eloquent
   dynamixel-workbench:
     type: git
@@ -21,15 +21,15 @@ repositories:
     version: ros2
   libcreate:
     type: git
-    url: git@github.com:AutonomyLab/libcreate.git
+    url: https://github.com/AutonomyLab/libcreate.git
     version: master
   open_manipulator:
     type: git
-    url: git@github.com:youtalk/open_manipulator.git
+    url: https://github.com/youtalk/open_manipulator.git
     version: youfork
   open_manipulator_dependencies:
     type: git
-    url: git@github.com:youtalk/open_manipulator_dependencies.git
+    url: https://github.com/youtalk/open_manipulator_dependencies.git
     version: eloquent
   open_manipulator_msgs:
     type: git
@@ -37,7 +37,7 @@ repositories:
     version: ros2
   realsense-ros:
     type: git
-    url: git@github.com:youtalk/realsense-ros.git
+    url: https://github.com/youtalk/realsense-ros.git
     version: eloquent
   robotis_manipulator:
     type: git
@@ -45,9 +45,9 @@ repositories:
     version: ros2
   ros2_intel_realsense:
     type: git
-    url: git@github.com:intel/ros2_intel_realsense.git
+    url: https://github.com/intel/ros2_intel_realsense.git
     version: eloquent
   rplidar_ros:
     type: git
-    url: git@github.com:youtalk/rplidar_ros.git
+    url: https://github.com/youtalk/rplidar_ros.git
     version: eloquent
