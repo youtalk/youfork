@@ -1,0 +1,54 @@
+version: 2
+jobs:
+  foxy:
+    docker:
+      - image: ros:foxy
+    steps:
+      - checkout
+      - run:
+          name: Set Up Container
+          command: |
+            apt-get update -qq
+            apt-get install python3-vcstool
+            source /opt/ros/foxy/setup.bash
+            mkdir ~/ros
+            ln -s ~/project/src ~/ros/
+            cd ~/ros
+            vcs import src < youfork.repos
+            rosdep install --from-paths . --ignore-src -y
+      - run:
+          name: Build
+          command: |
+            source /opt/ros/foxy/setup.bash
+            cd ~/ros
+            colcon build
+
+  eloquent:
+    docker:
+      - image: ros:eloquent
+    steps:
+      - checkout
+      - run:
+          name: Set Up Container
+          command: |
+            apt-get update -qq
+            apt-get install python3-vcstool
+            source /opt/ros/eloquent/setup.bash
+            mkdir ~/ros
+            ln -s ~/project/src ~/ros/
+            cd ~/ros
+            vcs import src < youfork.repos
+            rosdep install --from-paths . --ignore-src -y
+      - run:
+          name: Build
+          command: |
+            source /opt/ros/eloquent/setup.bash
+            cd ~/ros
+            colcon build
+
+workflows:
+  version: 2
+  ros_build:
+    jobs:
+      - foxy
+      - eloquent
