@@ -11,16 +11,14 @@ jobs:
             apt-get update -qq
             apt-get install python3-vcstool
             source /opt/ros/foxy/setup.bash
-            mkdir ~/ros
-            ln -s ~/project/src ~/ros/
-            cd ~/ros
+            cd ~/project
             vcs import src < youfork.repos
             rosdep install --from-paths . --ignore-src -y
       - run:
           name: Build
           command: |
             source /opt/ros/foxy/setup.bash
-            cd ~/ros
+            cd ~/project
             colcon build
 
   eloquent:
@@ -34,16 +32,14 @@ jobs:
             apt-get update -qq
             apt-get install python3-vcstool
             source /opt/ros/eloquent/setup.bash
-            mkdir ~/ros
-            ln -s ~/project/src ~/ros/
-            cd ~/ros
+            cd ~/project
             vcs import src < youfork.repos
             rosdep install --from-paths . --ignore-src -y
       - run:
           name: Build
           command: |
             source /opt/ros/eloquent/setup.bash
-            cd ~/ros
+            cd ~/project
             colcon build
 
 workflows:
