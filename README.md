@@ -27,7 +27,7 @@ However the Jetson Xavier on `youfork` is currently running only on Ubuntu 18.04
 Firstly install `librealsense2` package because it cannot be installed by `rosdep` then check out repositories by `vcs import` and run `rosdep install`.
 
 ```sh
-mkdir ~/youfork
+mkdir ~/youfork && cd ~/youfork
 git clone git@github.com:youtalk/youfork.git src
 sudo apt update
 sudo apt install -y software-properties-common
