@@ -18,7 +18,7 @@ All components are driven by ROS 2 Eloquent and Ubuntu 18.04 on the Jetson Xavie
 - PS4 controller for teleoperation
 
 `youfork` packages is beeing checked to build on CircleCI with ROS 2 Eloquent and Foxy.
-However the Jetson Xavier on youfork is currently running only on Ubuntu 18.04, so that I've checked to work youfork properly only on ROS 2 Eloquent and Ubuntu 18.04.
+However the Jetson Xavier on `youfork` is currently running only on Ubuntu 18.04, so that I've checked to work `youfork` properly only on ROS 2 Eloquent and Ubuntu 18.04.
 
 ## Install dependencies
 
