@@ -47,3 +47,42 @@ cd ~/youtalk
 source /opt/ros/$ROS_DISTRO/setup.bash
 colcon build
 ```
+
+## Launch nodes
+
+### Bring up devices
+
+```sh
+. ~/youfork/install/setup.bash
+ros2 launch ros2 launch youfork_bringup bringup.launch.xml use_create:=true use_open_manipulator:=true use_rplidar:=true use_realsense:=true
+```
+
+### Activate the Roomba lifecycle
+
+```sh
+source /opt/ros/$ROS_DISTRO/setup.bash
+ros2 lifecycle set /ca_driver configure
+ros2 lifecycle set /ca_driver activate
+```
+
+### Visualize youfork by RViz2
+
+```sh
+. ~/youfork/install/setup.bash
+rviz2 -d ~/youfork/src/youfork_description/config/youfork.rviz
+```
+
+### Teleoperate by PS4 controller
+
+Firstly install [`ds4drv`](https://github.com/chrippa/ds4drv) and run the following command to connect with the wireless PS4 controller.
+
+```sh
+sudo ds4drv
+```
+
+Then launch the teleop related nodes.
+
+```sh
+. ~/youfork/install/setup.bash
+ros2 launch youfork_teleop teleop.launch.xml
+```
