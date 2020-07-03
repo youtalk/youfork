@@ -15,8 +15,11 @@ jobs:
             apt-get update -qq
             apt-get install -y -qq --no-install-recommends python3-vcstool librealsense2-dev
             source /opt/ros/foxy/setup.bash
-            cd ~/project
-            vcs import src < youfork.repos
+            mkdir ~/youfork
+            ln -s ~/project ~/youfork/src
+            cd ~/youfork/src
+            vcs import < youfork.repos
+            cd ~/youfork
             export DEBIAN_FRONTEND=noninteractive
             rosdep install --from-paths . --ignore-src -y
       - run:
@@ -41,8 +44,11 @@ jobs:
             apt-get update -qq
             apt-get install -y -qq --no-install-recommends python3-vcstool librealsense2-dev
             source /opt/ros/eloquent/setup.bash
-            cd ~/project
-            vcs import src < youfork.repos
+            mkdir ~/youfork
+            ln -s ~/project ~/youfork/src
+            cd ~/youfork/src
+            vcs import < youfork.repos
+            cd ~/youfork
             export DEBIAN_FRONTEND=noninteractive
             rosdep install --from-paths . --ignore-src -y
       - run:

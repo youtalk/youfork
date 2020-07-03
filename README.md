@@ -27,9 +27,8 @@ However the Jetson Xavier on `youfork` is currently running only on Ubuntu 18.04
 Firstly install `librealsense2` package because it cannot be installed by `rosdep` then check out repositories by `vcs import` and run `rosdep install`.
 
 ```sh
-cd ~/
-git clone git@github.com:youtalk/youfork.git
-cd ~/youtalk
+mkdir ~/youfork && cd ~/youfork
+git clone git@github.com:youtalk/youfork.git src
 sudo apt update
 sudo apt install -y software-properties-common
 sudo apt-key adv --keyserver keys.gnupg.net --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
@@ -37,8 +36,9 @@ sudo add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/
 sudo apt update
 sudo apt install --no-install-recommends python3-vcstool librealsense2-dev
 source /opt/ros/$ROS_DISTRO/setup.bash
+cd ~/youtalk/src
+vcs import < youfork.repos
 cd ~/youtalk
-vcs import src < youfork.repos
 rosdep install --from-paths . --ignore-src -y
 ```
 
