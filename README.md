@@ -36,16 +36,16 @@ sudo add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/
 sudo apt update
 sudo apt install --no-install-recommends python3-vcstool librealsense2-dev
 source /opt/ros/$ROS_DISTRO/setup.bash
-cd ~/youtalk/src
+cd ~/youfork/src
 vcs import < youfork.repos
-cd ~/youtalk
+cd ~/youfork
 rosdep install --from-paths . --ignore-src -y
 ```
 
 ## Build
 
 ```sh
-cd ~/youtalk
+cd ~/youfork
 source /opt/ros/$ROS_DISTRO/setup.bash
 colcon build
 ```
