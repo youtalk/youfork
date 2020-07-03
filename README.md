@@ -6,6 +6,8 @@
 
 [![youfork: Fully ROS 2 Homemade Mobile Manipulator](https://img.youtube.com/vi/2srDav_n2S0/0.jpg)](https://www.youtube.com/watch?v=2srDav_n2S0)
 
+[Slides from ROS Japan UG #37](https://docs.google.com/presentation/d/1QCLE6ED7YsSedzqXm65fToplTvbDD3roUvKMAm8AC5k/preview) (in Japanese)
+
 All components are driven by ROS 2 Eloquent and Ubuntu 18.04 on the Jetson Xavier.
 `youfork` has a lot of devices inside:
 
