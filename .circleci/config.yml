@@ -1,0 +1,60 @@
+version: 2
+jobs:
+  foxy:
+    docker:
+      - image: ros:foxy
+    steps:
+      - checkout
+      - run:
+          name: Set Up Container
+          command: |
+            apt-get update -qq
+            apt-get install -y software-properties-common
+            apt-key adv --keyserver keys.gnupg.net --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
+            add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo bionic main" -u
+            apt-get update -qq
+            apt-get install -y -qq --no-install-recommends python3-vcstool librealsense2-dev
+            source /opt/ros/foxy/setup.bash
+            cd ~/project
+            vcs import src < youfork.repos
+            export DEBIAN_FRONTEND=noninteractive
+            rosdep install --from-paths . --ignore-src -y
+      - run:
+          name: Build
+          command: |
+            source /opt/ros/foxy/setup.bash
+            cd ~/project
+            colcon build
+
+  eloquent:
+    docker:
+      - image: ros:eloquent
+    steps:
+      - checkout
+      - run:
+          name: Set Up Container
+          command: |
+            apt-get update -qq
+            apt-get install -y -qq software-properties-common
+            apt-key adv --keyserver keys.gnupg.net --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE || apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE
+            add-apt-repository "deb http://realsense-hw-public.s3.amazonaws.com/Debian/apt-repo bionic main" -u
+            apt-get update -qq
+            apt-get install -y -qq --no-install-recommends python3-vcstool librealsense2-dev
+            source /opt/ros/eloquent/setup.bash
+            cd ~/project
+            vcs import src < youfork.repos
+            export DEBIAN_FRONTEND=noninteractive
+            rosdep install --from-paths . --ignore-src -y
+      - run:
+          name: Build
+          command: |
+            source /opt/ros/eloquent/setup.bash
+            cd ~/project
+            colcon build
+
+workflows:
+  version: 2
+  ros_build:
+    jobs:
+      - foxy
+      - eloquent
